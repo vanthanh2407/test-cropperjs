@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Ảnh với CropperJS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .upload-section {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        #image-container {
+            max-height: 500px;
+            display: none;
+        }
+        #image-preview {
+            max-width: 100%;
+            max-height: 400px;
+        }
+        #cropped-result {
+            display: none;
+            margin-top: 20px;
+        }
+        #cropped-image {
+            max-width: 100%;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload và Crop Ảnh</h1>
+        <div class="upload-section">
+            <div style="margin-bottom: 15px;">
+                <label for="ratio-select">Chọn tỷ lệ: </label>
+                <select id="ratio-select">
+                    <option value="1:1">1:1 (Vuông)</option>
+                    <option value="1:2">1:2 (Dọc)</option>
+                    <option value="16:9" selected>16:9 (Ngang)</option>
+                    <option value="9:16">9:16 (Dọc)</option>
+                </select>
+            </div>
+            <input type="file" id="file-input" accept="image/*">
+            <p>Hoặc kéo thả ảnh vào đây</p>
+        </div>
+        
+        <div id="image-container">
+            <img id="image-preview" src="" alt="Ảnh xem trước">
+            <div>
+                <button id="crop-btn">Crop Ảnh</button>
+                <button id="cancel-btn">Hủy</button>
+            </div>
+        </div>
+        
+        <div id="cropped-result">
+            <h3>Ảnh đã crop:</h3>
+            <img id="cropped-image" src="" alt="Ảnh đã crop">
+            <button id="download-btn">Tải ảnh về</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
