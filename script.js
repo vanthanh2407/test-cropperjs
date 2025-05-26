@@ -175,12 +175,54 @@ document.addEventListener('DOMContentLoaded', function() {
                 const ctx = outputCanvas.getContext('2d');
                 
                 // Scale ảnh đã crop lên kích thước đầu ra
-                var a = ctx.drawImage(canvas, 0, 0, outputSize.width, outputSize.height);
-                console.log('a:', canvas, outputSize.width, outputSize.height)
-                // Hiển thị kết quả
-                croppedImage.src = outputCanvas.toDataURL('image/jpeg', 0.9);
-                croppedResult.style.display = 'block';
-                croppedResult.scrollIntoView({ behavior: 'smooth' });
+                ctx.drawImage(canvas, 0, 0, outputSize.width, outputSize.height);
+                
+                // Get the base64 data
+                const croppedImageData = outputCanvas.toDataURL('image/jpeg', 0.9);
+                
+                // Upload the cropped image
+                const formData = new FormData();
+                formData.append('croppedImage', croppedImageData);
+                
+                // Show loading state
+                cropBtn.disabled = true;
+                cropBtn.textContent = 'Đang xử lý...';
+                
+                fetch('upload.php', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Hiển thị kết quả
+                        croppedImage.src = croppedImageData;
+                        croppedResult.style.display = 'block';
+                        croppedResult.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Show success message
+                        alert('Ảnh đã được lưu thành công!');
+                    } else {
+                        throw new Error(data.message || 'Không thể lưu ảnh');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Lỗi: ' + error.message);
+                })
+                .finally(() => {
+                    // Reset button state
+                    cropBtn.disabled = false;
+                    cropBtn.textContent = 'Crop Ảnh';
+                });
             }
         }
     });
